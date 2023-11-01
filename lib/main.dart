@@ -44,15 +44,16 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _counter = 0.0;
-  var controllerNum1 = TextEditingController();
-  var controllerNum2 = TextEditingController();
+  final controllerBill = TextEditingController();
+  double _sliderValue = 0;
+  double tip = 0;
+  double bill = 0;
+
   void setCounter(counter) {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -60,7 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter = counter;
     });
   }
 
@@ -72,23 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-
-    void addNumbers(double num1, double num2) => setState(() {
-          _counter = num1 + num2;
-        });
-
-    void subtract(double num1, double num2) => setState(() {
-          _counter = num1 - num2;
-        });
-
-    void multiply(double num1, double num2) => setState(() {
-          _counter = num1 * num2;
-        });
-
-    void divide(double num1, double num2) => setState(() {
-          _counter = num1 / num2;
-        });
-
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -120,70 +103,58 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: <Widget>[
                   const Text(
-                    'The Flutter Way 01- Calculator Assignment',
+                    'The Flutter Way 02- Tip Calculator',
                     style: TextStyle(fontSize: 22.0),
                   ),
                   const SizedBox(
                     height: 16.0,
                   ),
                   TextField(
-                      controller: controllerNum1,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter first number',
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ]),
+                    controller: controllerBill,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter bill amount',
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    onChanged: (value) =>
+                    {
+                      // controllerBill.text = value,
+                      // print("Working"),
+                      setState(() {
+                        tip = double.parse(value) * (_sliderValue / 100);
+                      }),
+                      setState(() {
+                        bill = double.parse(value) + tip;
+                      })
+                    },
+                  ),
                   const SizedBox(
                     height: 16.0,
                   ),
-                  TextField(
-                      controller: controllerNum2,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter second number',
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ]),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        child: Text("+"),
-                        onPressed: () => {addNumbers(double.parse(controllerNum1.text),
-                            double.parse(controllerNum2.text))},
-                      ),
-                      ElevatedButton(
-                        child: Text("-"),
-                        onPressed: () => {subtract(double.parse(controllerNum1.text),
-                            double.parse(controllerNum2.text))},
-                      ),
-                      ElevatedButton(
-                        child: Text("x"),
-                        onPressed: () => {multiply(double.parse(controllerNum1.text),
-                            double.parse(controllerNum2.text))},
-                      ),
-                      ElevatedButton(
-                        child: Text("/"),
-                        onPressed: () => {divide(double.parse(controllerNum1.text),
-                            double.parse(controllerNum2.text))},
-                      ),
-                    ],
-                  ),
+                  const Text('Select Tip Percentage:'),
+                  Slider(
+                      min: 0,
+                      max: 30,
+                      divisions: 10,
+                      label: "${_sliderValue.round()}%",
+                      value: _sliderValue,
+                      onChanged: (double mValue) =>
+                      {
+                        setState(() {
+                          _sliderValue = mValue;
+                        }),
+                        tip = double.parse(controllerBill.text) *
+                            (mValue / 100),
+                        bill = double.parse(controllerBill.text) + tip
+                      }),
                   const SizedBox(
                     height: 16.0,
                   ),
                   Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    "Tip Amount: PKR $tip",
                   ),
+                  Text("Bill Amount: PKR $bill")
                 ],
               ),
             ),
