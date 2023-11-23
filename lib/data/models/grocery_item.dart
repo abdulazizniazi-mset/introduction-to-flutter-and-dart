@@ -13,4 +13,14 @@ class GroceryItem {
     required this.image,
     required this.unit
   });
+
+  @override
+  bool operator ==(Object other) =>
+      other is GroceryItem &&
+          other.runtimeType == runtimeType &&
+          other.name == name;
+
+
+  @override
+  int get hashCode => name.hashCode;
 }

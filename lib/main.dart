@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:introduction_to_flutter_and_dart/cart_manager.dart';
 import 'package:introduction_to_flutter_and_dart/component/home_list.dart';
 import 'package:introduction_to_flutter_and_dart/data/strings.dart';
 import 'package:introduction_to_flutter_and_dart/data/styles.dart';
 import 'package:introduction_to_flutter_and_dart/util/mock.dart';
+import 'package:provider/provider.dart';
 
 import 'bottom_nav.dart';
 import 'cart.dart';
 import 'data/models/grocery_item.dart';
 
 void main() {
-  runApp(HomePage());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CartManager(),
+      child: const HomePage(),
+    ),
+  );
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,11 +31,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
   int totalItems = MockData().groceryItems.length;
-  List<GroceryItem> cartItems= [];
-  final pages = [
-    const HomeList(),
-    CartScreen()
-  ];
+  List<GroceryItem> cartItems = [];
+  late CartScreen cartScreen;
+  final pages = <StatefulWidget>[const HomeList(), const CartScreen()];
 
   void onIndexChanged(index) {
     setState(() {
