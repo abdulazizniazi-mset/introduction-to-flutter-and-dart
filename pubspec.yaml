@@ -59,6 +59,7 @@ flutter:
     - assets/images/carrot.jpg
     - assets/images/cucumber.jpg
     - assets/images/orange.jpg
+    - assets/images/mse_technology_logo.jpeg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

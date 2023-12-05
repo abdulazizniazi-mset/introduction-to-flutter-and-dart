@@ -1,65 +1,52 @@
-import 'package:flutter/material.dart';
-import 'package:introduction_to_flutter_and_dart/cart_manager.dart';
-import 'package:introduction_to_flutter_and_dart/component/home_list.dart';
-import 'package:introduction_to_flutter_and_dart/data/strings.dart';
-import 'package:introduction_to_flutter_and_dart/data/styles.dart';
-import 'package:introduction_to_flutter_and_dart/util/mock.dart';
-import 'package:provider/provider.dart';
+import 'dart:async';
 
-import 'bottom_nav.dart';
-import 'cart.dart';
-import 'data/models/grocery_item.dart';
+import 'package:flutter/material.dart';
+import 'package:introduction_to_flutter_and_dart/data/styles.dart';
+import 'package:introduction_to_flutter_and_dart/screens/assignment_list.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => CartManager(),
-      child: const HomePage(),
+    MaterialApp(
+      home: const Scaffold(
+        body: Splash(),
+      ),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
     ),
   );
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class Splash extends StatefulWidget {
+  const Splash({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _HomePageState();
-  }
+  State<Splash> createState() => _SplashState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int pageIndex = 0;
-  int totalItems = MockData().groceryItems.length;
-  List<GroceryItem> cartItems = [];
-  late CartScreen cartScreen;
-  final pages = <StatefulWidget>[const HomeList(), const CartScreen()];
-
-  void onIndexChanged(index) {
-    setState(() {
-      pageIndex = index;
-    });
-  }
+class _SplashState extends State<Splash> {
 
   @override
+  void initState() {
+    Timer(
+        Duration(seconds: 1),
+            () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => AssignmentList())));
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: Strings.appName,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text(
-            Strings.appName,
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset("assets/images/mse_technology_logo.jpeg"),
+          const Text(
+            "The Flutter Way",
             style: TextStyles.title,
-          ),
-          elevation: 0,
-        ),
-        bottomNavigationBar: AppBottomNav(onIndexChanged: onIndexChanged),
-        body: pages[pageIndex],
+          )
+        ],
       ),
     );
   }
