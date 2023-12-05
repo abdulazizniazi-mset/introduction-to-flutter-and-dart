@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_to_flutter_and_dart/data/styles.dart';
 import 'package:introduction_to_flutter_and_dart/screens/home.dart';
+import 'package:introduction_to_flutter_and_dart/screens/tip_calculator.dart';
+import 'package:provider/provider.dart';
+
+import '../util/tip_calculator_util.dart';
 
 class AssignmentList extends StatefulWidget {
   const AssignmentList({super.key});
@@ -10,6 +14,14 @@ class AssignmentList extends StatefulWidget {
 }
 
 class _AssignmentListState extends State<AssignmentList> {
+  var assignmentList = [
+    ChangeNotifierProvider(
+      create: (_)=>TipCalculatorUtil(),
+      child: const TipCalculator(),
+    ),
+    const HomePage()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +30,12 @@ class _AssignmentListState extends State<AssignmentList> {
       ),
       body: ListView.builder(
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (BuildContext context) => HomePage())),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => assignmentList[index])),
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text("Assignment ${index+1}", style: TextStyles.body),
+              child: Text("Assignment ${index + 1}", style: TextStyles.body),
             ),
           ),
         ),
