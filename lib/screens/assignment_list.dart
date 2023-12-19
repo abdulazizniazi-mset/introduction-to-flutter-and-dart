@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_to_flutter_and_dart/data/styles.dart';
-import 'package:introduction_to_flutter_and_dart/screens/home.dart';
-import 'package:introduction_to_flutter_and_dart/screens/tip_calculator.dart';
+import 'package:introduction_to_flutter_and_dart/screens/tip_calculator_screen.dart';
+import 'package:introduction_to_flutter_and_dart/util/assignment_one_util.dart';
 import 'package:provider/provider.dart';
 
 import '../util/tip_calculator_util.dart';
+import 'calculator_screen.dart';
+import 'gorcery_home_screen.dart';
 
 class AssignmentList extends StatefulWidget {
   const AssignmentList({super.key});
@@ -16,10 +18,14 @@ class AssignmentList extends StatefulWidget {
 class _AssignmentListState extends State<AssignmentList> {
   var assignmentList = [
     ChangeNotifierProvider(
-      create: (_)=>TipCalculatorUtil(),
+      create: (_) => CalculatorAssignmentUtil(),
+      child: Calculator(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => TipCalculatorUtil(),
       child: const TipCalculator(),
     ),
-    const HomePage()
+    const GroceryHomePage()
   ];
 
   @override

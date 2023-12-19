@@ -1,31 +1,33 @@
 
 import 'package:flutter/material.dart';
-import 'package:introduction_to_flutter_and_dart/cart_manager.dart';
+import 'package:introduction_to_flutter_and_dart/util/cart_manager.dart';
+import 'package:introduction_to_flutter_and_dart/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../bottom_nav.dart';
-import '../cart.dart';
+import '../component/bottom_nav.dart';
+import 'cart_screen.dart';
 import '../component/home_list.dart';
 import '../data/models/grocery_item.dart';
 import '../data/strings.dart';
 import '../data/styles.dart';
 import '../util/mock.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class GroceryHomePage extends StatefulWidget {
+  const GroceryHomePage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _HomePageState();
+    return _GroceryHomePageState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
+class _GroceryHomePageState extends State<GroceryHomePage> {
   int pageIndex = 0;
   int totalItems = MockData().groceryItems.length;
   List<GroceryItem> cartItems = [];
   late CartScreen cartScreen;
-  final pages = <StatefulWidget>[const HomeList(), const CartScreen()];
+  final pages = <StatefulWidget>[const HomeList(), const CartScreen(),
+    const SettingsScreen()];
 
   void onIndexChanged(index) {
     setState(() {
